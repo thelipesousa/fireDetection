@@ -4,58 +4,51 @@
 #include <unistd.h>
 #include "functions.h"
 
-// Definição das variáveis externas para comunicação com a central
-pthread_mutex_t central_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t central_cond = PTHREAD_COND_INITIALIZER;
+#define TAMANHO_FLORESTA 30
+
+
+char floresta[TAMANHO_FLORESTA][TAMANHO_FLORESTA];
+pthread_mutex_t mutex_flores[TAMANHO_FLORESTA][TAMANHO_FLORESTA];
+
+void inicializar_forest() {
+    for (int i = 0; i < TAMANHO_FLORESTA; i++) {
+        for (int j = 0; j < TAMANHO_FLORESTA; j++) {
+            floresta[i][j] = '-';
+            pthread_mutex_init(&mutex_flores[i][j], NULL);
+        }
+    }
+}
 
 int main() {
-    srand(time(NULL)); // Inicializa a semente do rand()
-    initialize_forest();
+    pthread_t gerador_thread, central_thread;
+    sensor_args sensores_args[TAMANHO_FLORESTA * TAMANHO_FLORESTA];
+    pthread_t sensores_threads[TAMANHO_FLORESTA * TAMANHO_FLORESTA];
+    int id = 0;
 
-    pthread_t sensor_threads[SIZE][SIZE];
-    pthread_t fire_thread;
-    pthread_t central_thread;
+    inicializar_forest();
+    inicializar_sensores();
 
-    // Criar threads dos nós sensores
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (forest[i][j].state == SENSOR) {
-                if (pthread_create(&sensor_threads[i][j], NULL, sensor_node_func, (void*)&forest[i][j])) {
-                    fprintf(stderr, "Erro ao criar thread do sensor (%d, %d)\n", i, j);
-                    exit(EXIT_FAILURE);
-                }
-            }
+    // Cria a thread geradora de incêndios
+    pthread_create(&gerador_thread, NULL, gerador_incendios, NULL);
+
+    pthread_create(&central_thread, NULL, central_controle, NULL);
+
+
+    for (int i = 0; i < TAMANHO_FLORESTA; i++) {
+        for (int j = 0; j < TAMANHO_FLORESTA; j++) {
+            sensores_args[id].x = i;
+            sensores_args[id].y = j;
+            pthread_create(&sensores_threads[id], NULL, sensor, &sensores_args[id]);
+            id++;
         }
     }
 
-    // Criar thread geradora de incêndios
-    if (pthread_create(&fire_thread, NULL, fire_generator_func, NULL)) {
-        fprintf(stderr, "Erro ao criar thread geradora de incêndios\n");
-        exit(EXIT_FAILURE);
-    }
 
-    // Criar thread central de controle
-    if (pthread_create(&central_thread, NULL, central_control_func, NULL)) {
-        fprintf(stderr, "Erro ao criar thread central\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Loop principal para atualizar a visualização
-    while (1) {
-        print_forest();
-        sleep(1);
-    }
-
-    // Aguardar término das threads (nunca alcançado neste caso)
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (forest[i][j].state == SENSOR) {
-                pthread_join(sensor_threads[i][j], NULL);
-            }
-        }
-    }
-    pthread_join(fire_thread, NULL);
+    pthread_join(gerador_thread, NULL);
     pthread_join(central_thread, NULL);
+    for (int i = 0; i < TAMANHO_FLORESTA * TAMANHO_FLORESTA; i++) {
+        pthread_join(sensores_threads[i], NULL);
+    }
 
     return 0;
 }

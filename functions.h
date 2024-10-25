@@ -3,29 +3,17 @@
 
 #include <pthread.h>
 
-#define SIZE 30  // Tamanho da matriz
-
-typedef enum {
-    EMPTY,    // Área livre '-'
-    SENSOR,   // Nó sensor 'T'
-    FIRE,     // Em chamas '@'
-    BURNED    // Queimado '/'
-} CellState;
+#define TAMANHO_FLORESTA 30
 
 typedef struct {
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-    CellState state;
-    int x, y;
-    int is_edge;
-} SensorNode;
+    int x;
+    int y;
+} sensor_args;
 
-extern SensorNode forest[SIZE][SIZE];
-void initialize_forest();
-void print_forest();
-void fight_fire(int x, int y);
-void* sensor_node_func(void* arg);
-void* fire_generator_func(void* arg);
-void* central_control_func(void* arg);
+void* gerador_incendios(void* arg);
+void* sensor(void* args);
+void* central_controle(void* arg);
+void enviar_para_central(int x, int y);
+void enviar_para_vizinho(int x, int y);
 
 #endif
