@@ -40,7 +40,7 @@ void* gerador_incendios(void* arg) {
         pthread_mutex_lock(&mutex_flores[x][y]);
         if (floresta[x][y] == '-') {
             floresta[x][y] = '@';
-            printf("Incêndio iniciado em (%d, %d)\n", x, y);
+            printf("Incendio iniciado em (%d, %d)\n", x, y);
         }
         pthread_mutex_unlock(&mutex_flores[x][y]);
     }
@@ -99,7 +99,7 @@ void* central_controle(void* arg) {
 
             printf("\n--- Rodada de Detecção ---\n");
             exibir_floresta();
-            printf("Central está monitorando incêndios...\n");
+            printf("Central está monitorando incendios...\n");
         } else {
 
             printf("\n--- Rodada de Combate ---\n");
@@ -110,7 +110,7 @@ void* central_controle(void* arg) {
                 pthread_mutex_lock(&mutex_flores[x][y]);
                 if (floresta[x][y] == '@') {
                     floresta[x][y] = '/';
-                    printf("Central: Incêndio em (%d, %d) foi combatido e apagado.\n", x, y);
+                    printf("Central: Incendio em (%d, %d) foi combatido e apagado.\n", x, y);
                 }
                 pthread_mutex_unlock(&mutex_flores[x][y]);
             }
@@ -118,7 +118,7 @@ void* central_controle(void* arg) {
 
             contador_incendios = 0;
             exibir_floresta();
-            printf("Central terminou o combate aos incêndios.\n");
+            printf("Central terminou o combate aos incendios.\n");
         }
 
 

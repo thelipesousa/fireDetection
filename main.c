@@ -28,7 +28,7 @@ int main() {
     inicializar_forest();
     inicializar_sensores();
 
-    // Cria a thread geradora de incêndios
+
     pthread_create(&gerador_thread, NULL, gerador_incendios, NULL);
 
     pthread_create(&central_thread, NULL, central_controle, NULL);
