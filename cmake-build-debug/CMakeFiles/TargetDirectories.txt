@@ -1,0 +1,3 @@
+D:/fireDetectionVFinal/fireDetection/cmake-build-debug/CMakeFiles/fireDetection.dir
+D:/fireDetectionVFinal/fireDetection/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/fireDetectionVFinal/fireDetection/cmake-build-debug/CMakeFiles/rebuild_cache.dir

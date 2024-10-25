@@ -1,0 +1,13 @@
+# ninja log v6
+9	194	7514085542606532	CMakeFiles/fireDetection.dir/main.c.obj	12bb2bba545b88a5
+17	212	7514085542762679	CMakeFiles/fireDetection.dir/functions.c.obj	7ce87a729abc42b5
+212	405	7514085544637757	fireDetection.exe	ade6cd7ed926ad3a
+4	410	7514121172304257	build.ninja	87ab94376cc371fe
+20	139	7514121287445252	CMakeFiles/fireDetection.dir/main.c.obj	ee3af9a9335ac7fd
+26	154	7514121287505268	CMakeFiles/fireDetection.dir/functions.c.obj	f18429388177b160
+155	286	7514121288798127	fireDetection.exe	23ca293c00d00f1d
+66	371	7515583803518423	CMakeFiles/fireDetection.dir/main.c.obj	ee3af9a9335ac7fd
+73	382	7515583803596842	CMakeFiles/fireDetection.dir/functions.c.obj	f18429388177b160
+382	724	7515583806676952	fireDetection.exe	23ca293c00d00f1d
+32	133	7515585420810308	CMakeFiles/fireDetection.dir/main.c.obj	ee3af9a9335ac7fd
+134	261	7515585421822634	fireDetection.exe	23ca293c00d00f1d
